@@ -1,0 +1,87 @@
+/* Ventas por meses */
+.ventas-meses__filtro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ventas-meses__filtro label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.ventas-meses__select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  background: var(--color-surface);
+  min-width: 10rem;
+}
+
+.ventas-meses__btn-cargar {
+  padding: 0.5rem 1rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ventas-meses__btn-cargar:hover {
+  background: var(--color-primary-dark);
+}
+
+.ventas-meses__mensaje {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.ventas-meses__mensaje--error {
+  color: var(--color-primary);
+}
+
+.ventas-meses__subtitulo {
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+}
+
+.ventas-meses__tabla-scroll {
+  overflow-x: auto;
+  border: 1px solid #eee;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.ventas-meses__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.ventas-meses__tabla th,
+.ventas-meses__tabla td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.ventas-meses__tabla th {
+  background: rgba(196, 30, 58, 0.08);
+  color: var(--color-primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ventas-meses__tabla .ventas-meses__th-num {
+  text-align: right;
+}
+
+.ventas-meses__tabla tbody tr:hover {
+  background: #fafafa;
+}

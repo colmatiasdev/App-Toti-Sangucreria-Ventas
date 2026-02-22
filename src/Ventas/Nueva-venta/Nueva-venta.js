@@ -73,23 +73,38 @@
   }
 
   function pintarListado() {
-    var lista = document.getElementById('nueva-venta-productos');
-    var cat = (document.getElementById('nueva-venta-categoria') || {}).value || '';
-    var filtrados = cat
-      ? productos.filter(function (p) { return p.CATEGORIA === cat; })
-      : productos;
-    lista.innerHTML = '';
-    filtrados.forEach(function (p) {
-      var li = document.createElement('li');
-      li.className = 'nueva-venta__item';
-      li.innerHTML =
-        '<span class="nueva-venta__item-nombre">' + escapeHtml(p['NOMBRE-PRODUCTO']) + '</span>' +
-        '<span class="nueva-venta__item-precio">' + formatearPrecio(p.PRECIO) + '</span>' +
-        '<button type="button" class="nueva-venta__btn-add" data-id="' + escapeHtml(p[TABLA.pk]) + '">Agregar</button>';
-      li.querySelector('.nueva-venta__btn-add').addEventListener('click', function () {
-        agregarAlCarrito(p);
+    var contenedor = document.getElementById('nueva-venta-productos');
+    var catFiltro = (document.getElementById('nueva-venta-categoria') || {}).value || '';
+    var porCategoria = {};
+    productos.forEach(function (p) {
+      var c = p.CATEGORIA || 'Otros';
+      if (!porCategoria[c]) porCategoria[c] = [];
+      porCategoria[c].push(p);
+    });
+    var categoriasOrden = Object.keys(porCategoria).sort();
+    if (catFiltro) categoriasOrden = categoriasOrden.filter(function (c) { return c === catFiltro; });
+    contenedor.innerHTML = '';
+    categoriasOrden.forEach(function (categoria) {
+      var productosCat = porCategoria[categoria];
+      var seccion = document.createElement('div');
+      seccion.className = 'nueva-venta__grupo';
+      seccion.innerHTML = '<h3 class="nueva-venta__grupo-titulo">' + escapeHtml(categoria) + '</h3>';
+      var ul = document.createElement('ul');
+      ul.className = 'nueva-venta__productos';
+      productosCat.forEach(function (p) {
+        var li = document.createElement('li');
+        li.className = 'nueva-venta__item';
+        li.innerHTML =
+          '<span class="nueva-venta__item-nombre">' + escapeHtml(p['NOMBRE-PRODUCTO']) + '</span>' +
+          '<span class="nueva-venta__item-precio">' + formatearPrecio(p.PRECIO) + '</span>' +
+          '<button type="button" class="nueva-venta__btn-add" data-id="' + escapeHtml(p[TABLA.pk]) + '">Agregar</button>';
+        li.querySelector('.nueva-venta__btn-add').addEventListener('click', function () {
+          agregarAlCarrito(p);
+        });
+        ul.appendChild(li);
       });
-      lista.appendChild(li);
+      seccion.appendChild(ul);
+      contenedor.appendChild(seccion);
     });
   }
 

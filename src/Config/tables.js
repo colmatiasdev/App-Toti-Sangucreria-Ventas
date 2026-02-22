@@ -75,11 +75,11 @@
       columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'CANTIDAD', 'PRECIO', 'MONTO']
     },
 
-    /** Tabla RESUMEN-VENTAS: resumen por mes, categoría y producto. */
+    /** Tabla RESUMEN-VENTAS: resumen por mes, día, categoría y producto. */
     RESUMEN_VENTAS: {
       sheet: 'RESUMEN-VENTAS',
       pk: 'MES',
-      columns: ['MES', 'CATEGORIA', 'NOMBRE-PRODUCTO', 'CANTIDAD', 'MONTO']
+      columns: ['MES', 'DIA', 'CATEGORIA', 'NOMBRE-PRODUCTO', 'CANTIDAD', 'MONTO']
     }
   };
 

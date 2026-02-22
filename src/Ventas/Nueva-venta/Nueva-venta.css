@@ -33,8 +33,33 @@
   background: var(--color-surface);
 }
 
+.nueva-venta__productos-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nueva-venta__grupo {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  border: 1px solid #eee;
+  overflow: hidden;
+}
+
+.nueva-venta__grupo-titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: rgba(196, 30, 58, 0.08);
+  margin: 0;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
 .nueva-venta__productos {
   list-style: none;
+  margin: 0;
+  padding: 0.75rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 0.75rem;

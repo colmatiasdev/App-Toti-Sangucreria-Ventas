@@ -6,6 +6,7 @@
   <title>Ventas por meses - Toti Sanguicería</title>
   <link rel="stylesheet" href="../../index.css">
   <link rel="stylesheet" href="../Footer/footer.css">
+  <link rel="stylesheet" href="ventas-por-meses.css">
 </head>
 <body>
   <header class="header">
@@ -30,13 +31,32 @@
       <a href="../../index.html" class="back-link">← Volver al inicio</a>
       <h1>Ventas por meses</h1>
     </div>
-    <section class="module-content">
-      <p>Módulo de ventas por meses. Aquí podrás consultar y analizar las ventas por período.</p>
+
+    <section class="ventas-meses__filtro">
+      <label for="ventas-meses-mes">Mes</label>
+      <select id="ventas-meses-mes" class="ventas-meses__select">
+        <option value="">Seleccione un mes</option>
+      </select>
+      <button type="button" class="ventas-meses__btn-cargar" id="ventas-meses-btn-cargar">Cargar ventas</button>
     </section>
+
+    <p class="ventas-meses__mensaje" id="ventas-meses-mensaje">Seleccione un mes y pulse Cargar ventas.</p>
+
+    <div class="ventas-meses__tabla-wrapper" id="ventas-meses-tabla-wrapper" hidden>
+      <h2 class="ventas-meses__subtitulo" id="ventas-meses-subtitulo"></h2>
+      <div class="ventas-meses__tabla-scroll">
+        <table class="ventas-meses__tabla" id="ventas-meses-tabla">
+          <thead id="ventas-meses-thead"></thead>
+          <tbody id="ventas-meses-tbody"></tbody>
+        </table>
+      </div>
+    </div>
   </main>
 
   <div id="footer-container" data-footer-src="../Footer/footer.html"></div>
 
+  <script src="../../Config/config.js"></script>
+  <script src="../../Config/tables.js"></script>
   <script src="../../main.js"></script>
   <script src="../Footer/footer.js"></script>
   <script src="ventas-por-meses.js"></script>

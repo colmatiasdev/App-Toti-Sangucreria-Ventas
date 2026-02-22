@@ -6,7 +6,7 @@
  * Tablas definidas:
  * - PRODUCTOS: PK ID-PRODUCTO. Columnas: ID-PRODUCTO, CATEGORIA, NOMBRE-PRODUCTO, PRECIO, HABILITADO
  * - ENERO (y meses): PK ID-VENTA. Columnas: ID-VENTA, FECHA_OPERATIVA, HORA, ID-PRODUCTO, CATEGORIA, PRODUCTO, MONTO
- * - RESUMEN-VENTAS: PK MES. Columnas: MES, CATEGORIA, NOMBRE-PRODUCTO, CANTIDAD, MONTO. Acciones: resumenAlta, resumenBaja, resumenModificacion, resumenLeer
+ * - RESUMEN-VENTAS: PK MES. Columnas: MES, DIA, CATEGORIA, NOMBRE-PRODUCTO, CANTIDAD, MONTO. Acciones: resumenAlta, resumenBaja, resumenModificacion, resumenLeer
  */
 
 /** ID del Google Sheet. Poner solo el ID (ej: 1R05n3t2cgmzX-z58b9Sgx4He9k9Y9NAm9myQXbEwv3Q) o la URL completa. */
@@ -27,7 +27,7 @@ var TABLAS = {
   RESUMEN_VENTAS: {
     sheet: 'RESUMEN-VENTAS',
     pk: 'MES',
-    columns: ['MES', 'CATEGORIA', 'NOMBRE-PRODUCTO', 'CANTIDAD', 'MONTO']
+    columns: ['MES', 'DIA', 'CATEGORIA', 'NOMBRE-PRODUCTO', 'CANTIDAD', 'MONTO']
   }
 };
 
@@ -315,7 +315,14 @@ function resumenAlta(params) {
     sheet.getRange(1, 1, 1, def.columns.length).setValues([def.columns]);
     sheet.getRange(1, 1, 1, def.columns.length).setFontWeight('bold');
   }
-  var fila = [dato.MES || '', dato.CATEGORIA || '', dato['NOMBRE-PRODUCTO'] || '', dato.CANTIDAD !== undefined ? dato.CANTIDAD : '', dato.MONTO !== undefined ? dato.MONTO : ''];
+  var fila = [
+    dato.MES || '',
+    dato.DIA !== undefined ? dato.DIA : '',
+    dato.CATEGORIA || '',
+    dato['NOMBRE-PRODUCTO'] || '',
+    dato.CANTIDAD !== undefined ? dato.CANTIDAD : '',
+    dato.MONTO !== undefined ? dato.MONTO : ''
+  ];
   sheet.appendRow(fila);
   return respuestaJson({ ok: true, mensaje: 'Resumen dado de alta.' });
 }
@@ -364,10 +371,11 @@ function resumenModificacion(params) {
         (dato['NOMBRE-PRODUCTO'] == null || String(datos[i][colNom]) === String(dato['NOMBRE-PRODUCTO']))) {
       var fila = [
         dato.MES !== undefined ? dato.MES : datos[i][0],
-        dato.CATEGORIA !== undefined ? dato.CATEGORIA : datos[i][1],
-        dato['NOMBRE-PRODUCTO'] !== undefined ? dato['NOMBRE-PRODUCTO'] : datos[i][2],
-        dato.CANTIDAD !== undefined ? dato.CANTIDAD : datos[i][3],
-        dato.MONTO !== undefined ? dato.MONTO : datos[i][4]
+        dato.DIA !== undefined ? dato.DIA : datos[i][1],
+        dato.CATEGORIA !== undefined ? dato.CATEGORIA : datos[i][2],
+        dato['NOMBRE-PRODUCTO'] !== undefined ? dato['NOMBRE-PRODUCTO'] : datos[i][3],
+        dato.CANTIDAD !== undefined ? dato.CANTIDAD : datos[i][4],
+        dato.MONTO !== undefined ? dato.MONTO : datos[i][5]
       ];
       sheet.getRange(i + 1, 1, i + 1, def.columns.length).setValues([fila]);
       return respuestaJson({ ok: true, mensaje: 'Resumen actualizado.' });
