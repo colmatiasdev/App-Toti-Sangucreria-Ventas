@@ -11,14 +11,15 @@
       'https://docs.google.com/spreadsheets/d/e/2PACX-1vRNYUmSj5Zpu85PtNg_8ZQPXbj1HsL8H8Or06RpoHpDW5EPj4TpXwVWvumDpujNQdlBnQhXDIujlt2A/pub?output=csv',
 
     /** URL del Web App de Google Apps Script para operaciones con la hoja (guardar, actualizar, etc.). */
-    APP_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwUs1DNO6FcI2sO1sad3ibUTxYoj285cOdUqYvcL9NibOu5mJKzSIPrja8yqkq4TCtj/exec',
+    APP_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxpzOpWq_FUVOQbfcaJj9223Z7Y23loIKw5HMGui-2URkwyHbe_-pk9k4j7S2zp6BAE/exec',
 
     /**
-     * Proxy CORS opcional para poder leer la respuesta del Apps Script desde localhost.
-     * Si lo dejas vacío, la venta se enviará igual y se asumirá éxito (el navegador bloqueará la respuesta).
-     * Ejemplo: 'https://corsproxy.io/?' (la URL del script se añade después, codificada).
+     * Proxy CORS para leer la respuesta del Apps Script desde localhost o GitHub Pages.
+     * Sin proxy el navegador bloquea la respuesta (CORS); la venta se guarda igual pero no se puede leer el JSON.
+     * Con proxy la petición pasa por el servidor y se evita el error en consola.
+     * Para desactivar: CORS_PROXY: ''
      */
-    CORS_PROXY: ''
+    CORS_PROXY: 'https://corsproxy.io/?'
   };
 
   global.APP_CONFIG = Config;
