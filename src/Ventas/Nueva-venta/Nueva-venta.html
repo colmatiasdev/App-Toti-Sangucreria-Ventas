@@ -6,6 +6,7 @@
   <title>Nueva venta - Toti Sanguicería</title>
   <link rel="stylesheet" href="../../../index.css">
   <link rel="stylesheet" href="../../Footer/footer.css">
+  <link rel="stylesheet" href="Nueva-venta.css">
 </head>
 <body>
   <header class="header">
@@ -30,13 +31,50 @@
       <a href="../../../index.html" class="back-link">← Volver al inicio</a>
       <h1>Nueva venta</h1>
     </div>
-    <section class="module-content">
-      <p>Módulo de nueva venta. Aquí podrás registrar las ventas.</p>
+
+    <section class="nueva-venta__listado">
+      <h2 class="nueva-venta__titulo">Productos</h2>
+      <p class="nueva-venta__mensaje" id="nueva-venta-mensaje">Cargando productos…</p>
+      <div class="nueva-venta__filtro">
+        <label for="nueva-venta-categoria">Categoría</label>
+        <select id="nueva-venta-categoria" class="nueva-venta__select">
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <ul class="nueva-venta__productos" id="nueva-venta-productos"></ul>
+    </section>
+
+    <section class="nueva-venta__resumen">
+      <h2 class="nueva-venta__titulo">Resumen de la venta</h2>
+      <div class="nueva-venta__resumen-content" id="nueva-venta-resumen-content">
+        <p class="nueva-venta__resumen-vacio" id="nueva-venta-resumen-vacio">No hay productos en la venta. Selecciona productos arriba.</p>
+        <table class="nueva-venta__tabla" id="nueva-venta-tabla" hidden>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="nueva-venta__th-num">Precio unit.</th>
+              <th class="nueva-venta__th-num">Cantidad</th>
+              <th class="nueva-venta__th-num">Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="nueva-venta-tabla-body"></tbody>
+          <tfoot>
+            <tr class="nueva-venta__total-row">
+              <td colspan="3"><strong>Total venta</strong></td>
+              <td class="nueva-venta__th-num" id="nueva-venta-total">0</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </section>
   </main>
 
   <div id="footer-container" data-footer-src="../../Footer/footer.html"></div>
 
+  <script src="../../Config/config.js"></script>
+  <script src="../../Config/tables.js"></script>
   <script src="../../../main.js"></script>
   <script src="../../Footer/footer.js"></script>
   <script src="Nueva-venta.js"></script>
