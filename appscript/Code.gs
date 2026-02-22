@@ -22,7 +22,7 @@ var TABLAS = {
   ENERO: {
     sheet: 'ENERO',
     pk: 'ID-VENTA',
-    columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'MONTO']
+    columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'CANTIDAD', 'PRECIO', 'MONTO']
   },
   RESUMEN_VENTAS: {
     sheet: 'RESUMEN-VENTAS',
@@ -196,7 +196,7 @@ function productoLeer(params) {
 
 function ventaAlta(params) {
   var hojaNombre = params.hoja || 'ENERO';
-  var def = TABLAS[hojaNombre] || { sheet: hojaNombre, pk: 'ID-VENTA', columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'MONTO'] };
+  var def = TABLAS[hojaNombre] || { sheet: hojaNombre, pk: 'ID-VENTA', columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'CANTIDAD', 'PRECIO', 'MONTO'] };
   var idVenta = params.idVenta || '';
   var fechaOperativa = params.fechaOperativa || '';
   var hora = params.hora || '';
@@ -211,7 +211,17 @@ function ventaAlta(params) {
   var filas = [];
   for (var i = 0; i < items.length; i++) {
     var it = items[i];
-    filas.push([idVenta, fechaOperativa, hora, it.idProducto || '', it.categoria || '', it.producto || '', it.monto || 0]);
+    filas.push([
+      idVenta,
+      fechaOperativa,
+      hora,
+      it.idProducto || '',
+      it.categoria || '',
+      it.producto || '',
+      it.cantidad !== undefined ? it.cantidad : 0,
+      it.precio !== undefined ? it.precio : 0,
+      it.monto !== undefined ? it.monto : 0
+    ]);
   }
   if (filas.length === 0) return respuestaJson({ ok: true, mensaje: 'Sin ítems.' });
   var startRow = sheet.getLastRow() + 1;
@@ -244,7 +254,7 @@ function ventaModificacion(params) {
   var idVenta = params.idVenta || params['ID-VENTA'];
   var items = params.items || [];
   if (!idVenta) return respuestaJson({ ok: false, error: 'Falta idVenta.' });
-  var def = TABLAS[hojaNombre] || { sheet: hojaNombre, pk: 'ID-VENTA', columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'MONTO'] };
+  var def = TABLAS[hojaNombre] || { sheet: hojaNombre, pk: 'ID-VENTA', columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'CANTIDAD', 'PRECIO', 'MONTO'] };
   var ss = getSS();
   var sheet = ss.getSheetByName(def.sheet);
   if (!sheet) return respuestaJson({ ok: false, error: 'No existe la hoja ' + def.sheet });
@@ -252,14 +262,23 @@ function ventaModificacion(params) {
   var colIdx = datos[0].indexOf('ID-VENTA');
   if (colIdx === -1) return respuestaJson({ ok: false, error: 'Columna ID-VENTA no encontrada.' });
   var filasActualizadas = 0;
-  var filaIdx = 1;
   for (var i = 1; i < datos.length; i++) {
     if (String(datos[i][colIdx]) === String(idVenta) && items[filasActualizadas]) {
       var it = items[filasActualizadas];
-      sheet.getRange(i + 1, 1, i + 1, def.columns.length).setValues([[idVenta, it.fechaOperativa || datos[i][1], it.hora || datos[i][2], it.idProducto || datos[i][3], it.categoria || datos[i][4], it.producto || datos[i][5], it.monto !== undefined ? it.monto : datos[i][6]]]);
+      var fila = [
+        idVenta,
+        it.fechaOperativa !== undefined ? it.fechaOperativa : datos[i][1],
+        it.hora !== undefined ? it.hora : datos[i][2],
+        it.idProducto !== undefined ? it.idProducto : datos[i][3],
+        it.categoria !== undefined ? it.categoria : datos[i][4],
+        it.producto !== undefined ? it.producto : datos[i][5],
+        it.cantidad !== undefined ? it.cantidad : datos[i][6],
+        it.precio !== undefined ? it.precio : datos[i][7],
+        it.monto !== undefined ? it.monto : datos[i][8]
+      ];
+      sheet.getRange(i + 1, 1, i + 1, def.columns.length).setValues([fila]);
       filasActualizadas++;
     }
-    filaIdx++;
   }
   return respuestaJson({ ok: true, mensaje: 'Venta actualizada.', filasActualizadas: filasActualizadas });
 }
@@ -267,7 +286,7 @@ function ventaModificacion(params) {
 function ventaLeer(params) {
   var hojaNombre = params.hoja || 'ENERO';
   var idVenta = params.idVenta || params['ID-VENTA'];
-  var def = TABLAS[hojaNombre] || { sheet: hojaNombre, columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'MONTO'] };
+  var def = TABLAS[hojaNombre] || { sheet: hojaNombre, columns: ['ID-VENTA', 'FECHA_OPERATIVA', 'HORA', 'ID-PRODUCTO', 'CATEGORIA', 'PRODUCTO', 'CANTIDAD', 'PRECIO', 'MONTO'] };
   var ss = getSS();
   var sheet = ss.getSheetByName(def.sheet);
   if (!sheet) return respuestaJson({ ok: true, datos: [] });

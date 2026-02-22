@@ -208,6 +208,8 @@
           idProducto: item.producto[TABLA.pk],
           categoria: item.producto.CATEGORIA,
           producto: item.producto['NOMBRE-PRODUCTO'],
+          cantidad: item.cantidad,
+          precio: item.producto.PRECIO,
           monto: item.producto.PRECIO * item.cantidad
         };
       })
