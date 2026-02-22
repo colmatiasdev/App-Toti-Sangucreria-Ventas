@@ -204,7 +204,9 @@ function ventaAlta(params) {
     var it = items[i];
     filas.push([idVenta, fechaOperativa, hora, it.idProducto || '', it.categoria || '', it.producto || '', it.monto || 0]);
   }
-  sheet.getRange(sheet.getLastRow() + 1, 1, sheet.getLastRow() + filas.length, def.columns.length).setValues(filas);
+  if (filas.length === 0) return respuestaJson({ ok: true, mensaje: 'Sin ítems.' });
+  var startRow = sheet.getLastRow() + 1;
+  sheet.getRange(startRow, 1, filas.length, def.columns.length).setValues(filas);
   return respuestaJson({ ok: true, mensaje: 'Venta guardada.' });
 }
 
