@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ventas por meses - Toti Sanguicería</title>
+  <title>Listado de ventas - EL TOTI Sandwicheria</title>
   <link rel="stylesheet" href="../../../index.css">
   <link rel="stylesheet" href="../../Footer/footer.css">
-  <link rel="stylesheet" href="ventas-por-meses.css">
+  <link rel="stylesheet" href="listado-ventas.css">
 </head>
 <body>
   <header class="header">
     <div class="header__logo">
-      <h1>Toti Sanguicería</h1>
+      <h1>EL TOTI Sandwicheria</h1>
       <span class="header__subtitle">Sistema de Ventas</span>
     </div>
     <nav class="nav">
@@ -20,13 +20,13 @@
           <a href="../Nueva-venta/Nueva-venta.html" class="nav__link">Nueva venta</a>
         </li>
         <li class="nav__item">
-          <a href="ventas-por-meses.html" class="nav__link">Ventas por meses</a>
-        </li>
-        <li class="nav__item">
-          <a href="../../Dashboard/dashboard-mensual.html" class="nav__link">Dashboard mensual</a>
+          <a href="listado-ventas.html" class="nav__link">Listado de ventas</a>
         </li>
         <li class="nav__item">
           <a href="../../Ventas-por-anio/ventas-por-anio.html" class="nav__link">Ventas por año</a>
+        </li>
+        <li class="nav__item">
+          <a href="../../Dashboard/dashboard.html" class="nav__link">Dashboard</a>
         </li>
       </ul>
     </nav>
@@ -35,21 +35,23 @@
   <main class="main">
     <div class="page-header">
       <a href="../../../index.html" class="back-link">← Volver al inicio</a>
-      <h1>Ventas por meses</h1>
+      <h1>Listado de ventas</h1>
     </div>
 
-    <section class="ventas-meses__filtro">
-      <label for="ventas-meses-mes">Mes</label>
-      <select id="ventas-meses-mes" class="ventas-meses__select">
+    <section class="listado-ventas__filtro">
+      <label for="listado-ventas-anio">Año</label>
+      <select id="listado-ventas-anio" class="listado-ventas__select" aria-label="Año"></select>
+      <label for="listado-ventas-mes">Mes</label>
+      <select id="listado-ventas-mes" class="listado-ventas__select">
       </select>
-      <button type="button" class="ventas-meses__btn-cargar" id="ventas-meses-btn-cargar">Cargar ventas</button>
+      <button type="button" class="listado-ventas__btn-cargar" id="listado-ventas-btn-cargar">Cargar ventas</button>
     </section>
 
-    <p class="ventas-meses__mensaje" id="ventas-meses-mensaje">Seleccione un mes y pulse Cargar ventas.</p>
+    <p class="listado-ventas__mensaje" id="listado-ventas-mensaje">Seleccione año, mes y pulse Cargar ventas.</p>
 
-    <div class="table-section ventas-meses__tabla-wrapper" id="ventas-meses-tabla-wrapper" hidden>
+    <div class="table-section listado-ventas__tabla-wrapper" id="listado-ventas-tabla-wrapper" hidden>
       <div class="table-header">
-        <div class="table-header-title" id="ventas-meses-subtitulo">Detalle de ventas</div>
+        <div class="table-header-title" id="listado-ventas-subtitulo">Detalle de ventas</div>
         <div class="table-header-actions">
           <label for="table-page-size" class="table-page-size-label">Registros por página</label>
           <select id="table-page-size" class="table-page-size-select" aria-label="Registros por página">
@@ -62,8 +64,8 @@
       </div>
       <div class="table-scroll">
         <table>
-          <thead id="ventas-meses-thead"></thead>
-          <tbody id="ventas-meses-tbody"></tbody>
+          <thead id="listado-ventas-thead"></thead>
+          <tbody id="listado-ventas-tbody"></tbody>
         </table>
       </div>
       <div class="table-footer" id="table-footer"></div>
@@ -86,6 +88,6 @@
   <script src="../../Config/tables.js"></script>
   <script src="../../../main.js"></script>
   <script src="../../Footer/footer.js"></script>
-  <script src="ventas-por-meses.js"></script>
+  <script src="listado-ventas.js"></script>
 </body>
 </html>

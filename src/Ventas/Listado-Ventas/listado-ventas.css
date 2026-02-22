@@ -1,5 +1,5 @@
-/* Ventas por meses */
-.ventas-meses__filtro {
+/* Listado de ventas */
+.listado-ventas__filtro {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -7,12 +7,12 @@
   margin-bottom: 1rem;
 }
 
-.ventas-meses__filtro label {
+.listado-ventas__filtro label {
   font-size: 0.9rem;
   color: var(--color-text-muted);
 }
 
-.ventas-meses__select {
+.listado-ventas__select {
   padding: 0.5rem 0.75rem;
   border: 1px solid #ddd;
   border-radius: var(--radius);
@@ -21,7 +21,7 @@
   min-width: 10rem;
 }
 
-.ventas-meses__btn-cargar {
+.listado-ventas__btn-cargar {
   padding: 0.5rem 1rem;
   background: var(--color-primary);
   color: white;
@@ -31,17 +31,17 @@
   cursor: pointer;
 }
 
-.ventas-meses__btn-cargar:hover {
+.listado-ventas__btn-cargar:hover {
   background: var(--color-primary-dark);
 }
 
-.ventas-meses__mensaje {
+.listado-ventas__mensaje {
   color: var(--color-text-muted);
   font-size: 0.95rem;
   margin-bottom: 1rem;
 }
 
-.ventas-meses__mensaje--error {
+.listado-ventas__mensaje--error {
   color: var(--color-primary);
 }
 

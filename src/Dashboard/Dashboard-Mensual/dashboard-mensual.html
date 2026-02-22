@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard ventas mensuales - Toti Sanguicería</title>
+  <title>Dashboard ventas mensuales - EL TOTI Sandwicheria</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../Footer/footer.css">
+  <link rel="stylesheet" href="../../Footer/footer.css">
   <style>
     :root {
       --rojo: #C41E3A;
@@ -585,14 +585,14 @@
   <!-- HEADER -->
   <header class="header">
     <div class="header__brand">
-      <h1>Toti Sanguicería</h1>
+      <h1>EL TOTI Sandwicheria</h1>
       <span>Sistema de Ventas</span>
     </div>
     <nav class="nav">
-      <a href="../Ventas/Nueva-venta/Nueva-venta.html" class="nav__link">Nueva venta</a>
-      <a href="../Ventas/Venta-por-meses/ventas-por-meses.html" class="nav__link">Ventas por meses</a>
-      <a href="dashboard-mensual.html" class="nav__link nav__link--active">Dashboard mensual</a>
-      <a href="../Ventas-por-anio/ventas-por-anio.html" class="nav__link">Ventas por año</a>
+      <a href="../../Ventas/Nueva-venta/Nueva-venta.html" class="nav__link">Nueva venta</a>
+      <a href="../../Ventas/Listado-Ventas/listado-ventas.html" class="nav__link">Listado de ventas</a>
+      <a href="../../Ventas-por-anio/ventas-por-anio.html" class="nav__link">Ventas por año</a>
+      <a href="../dashboard.html" class="nav__link nav__link--active">Dashboard</a>
     </nav>
   </header>
 
@@ -600,13 +600,15 @@
     <!-- PAGE HEADER -->
     <div class="page-header">
       <div class="page-title-block">
-        <a href="../../index.html" class="back-link">← Volver al inicio</a>
+        <a href="../../../index.html" class="back-link">← Volver al inicio</a>
         <h1 class="page-title">Dashboard — ventas de <span id="titulo-mes">mes</span></h1>
       </div>
     </div>
 
     <!-- FILTRO BAR -->
     <div class="filtro-bar">
+      <label for="ventas-meses-anio">Año</label>
+      <select id="ventas-meses-anio" class="select-mes" aria-label="Año"></select>
       <label for="ventas-meses-mes">Período</label>
       <select id="ventas-meses-mes" class="select-mes"></select>
       <button type="button" class="btn-cargar" id="ventas-meses-btn-cargar">
@@ -689,12 +691,12 @@
 
   </main>
 
-  <div id="footer-container" data-footer-src="../Footer/footer.html"></div>
+  <div id="footer-container" data-footer-src="../../Footer/footer.html"></div>
 
-  <script src="../Config/config.js"></script>
-  <script src="../Config/tables.js"></script>
-  <script src="../../main.js"></script>
-  <script src="../Footer/footer.js"></script>
+  <script src="../../Config/config.js"></script>
+  <script src="../../Config/tables.js"></script>
+  <script src="../../../main.js"></script>
+  <script src="../../Footer/footer.js"></script>
   <script>
   (function () {
     'use strict';
@@ -721,6 +723,17 @@
       return NOMBRES_MESES[idx] || NOMBRES_MESES[0];
     }
 
+    function getAnioActual() {
+      return new Date().getFullYear();
+    }
+
+    function getAniosDisponibles() {
+      var actual = getAnioActual();
+      var lista = [];
+      for (var a = actual; a >= actual - 4; a--) lista.push(a);
+      return lista;
+    }
+
     function setStatus(type, text) {
       var dot = document.getElementById('status-dot');
       var msg = document.getElementById('ventas-meses-mensaje');
@@ -729,9 +742,18 @@
     }
 
     function init() {
+      var selAnio = document.getElementById('ventas-meses-anio');
       var sel = document.getElementById('ventas-meses-mes');
       var btn = document.getElementById('ventas-meses-btn-cargar');
       if (!sel || !btn) return;
+      if (selAnio) {
+        getAniosDisponibles().forEach(function(a) {
+          var o = document.createElement('option');
+          o.value = a; o.textContent = a;
+          selAnio.appendChild(o);
+        });
+        selAnio.value = getAnioActual();
+      }
       NOMBRES_MESES.forEach(function(n) {
         var o = document.createElement('option');
         o.value = n; o.textContent = n;
@@ -746,13 +768,15 @@
     }
 
     function cargar() {
+      var selAnio = document.getElementById('ventas-meses-anio');
+      var anio = selAnio ? parseInt(selAnio.value, 10) : getAnioActual();
       var mes = document.getElementById('ventas-meses-mes').value;
       if (!mes) { setStatus('error','Seleccione un mes.'); return; }
       if (!APP_SCRIPT_URL) {
-        demoData(mes);
+        demoData(mes, anio);
         return;
       }
-      setStatus('loading','Cargando ' + mes + '…');
+      setStatus('loading','Cargando ' + mes + ' ' + anio + '…');
       var icon = document.getElementById('btn-icon');
       if (icon) { icon.innerHTML = '<span class="loading-spinner"></span>'; }
 
@@ -770,7 +794,12 @@
         .then(function(data) {
           if (icon) icon.textContent = '↻';
           if (data && data.ok && Array.isArray(data.datos)) {
-            processData(mes, data.datos);
+            var datos = data.datos.filter(function(r) {
+              var rowAnio = r.AÑO !== undefined && r.AÑO !== null && r.AÑO !== '' ? parseInt(String(r.AÑO), 10) : null;
+              if (rowAnio === null) return true;
+              return rowAnio === anio;
+            });
+            processData(mes, datos);
           } else {
             setStatus('error', (data && (data.error||data.mensaje)) || 'Sin datos.');
             hideAll();
@@ -783,9 +812,10 @@
         });
     }
 
-    function demoData(mes) {
+    function demoData(mes, anio) {
+      anio = anio || getAnioActual();
       var demo = [
-        {MES:mes,'ID-VENTA':'V-001',FECHA_OPERATIVA:'2026-02-22',HORA:'1899-12-30T13:30:00.000Z',CATEGORIA:'SANDWICH','ID-PRODUCTO':'PROD-001',PRODUCTO:'Lomito especial con papas',CANTIDAD:2,PRECIO:3500,MONTO:7000},
+        {MES:mes,AÑO:anio,'ID-VENTA':'V-001',FECHA_OPERATIVA:'2026-02-22',HORA:'1899-12-30T13:30:00.000Z',CATEGORIA:'SANDWICH','ID-PRODUCTO':'PROD-001',PRODUCTO:'Lomito especial con papas',CANTIDAD:2,PRECIO:3500,MONTO:7000},
         {MES:mes,'ID-VENTA':'V-002',FECHA_OPERATIVA:'2026-02-22',HORA:'1899-12-30T14:00:00.000Z',CATEGORIA:'SANDWICH','ID-PRODUCTO':'PROD-002',PRODUCTO:'Mila completo',CANTIDAD:1,PRECIO:3200,MONTO:3200},
         {MES:mes,'ID-VENTA':'V-003',FECHA_OPERATIVA:'2026-02-22',HORA:'1899-12-30T14:30:00.000Z',CATEGORIA:'BEBIDA','ID-PRODUCTO':'PROD-019',PRODUCTO:'Coca Cola 500ml',CANTIDAD:3,PRECIO:800,MONTO:2400},
         {MES:mes,'ID-VENTA':'V-004',FECHA_OPERATIVA:'2026-02-22',HORA:'1899-12-30T15:00:00.000Z',CATEGORIA:'SANDWICH','ID-PRODUCTO':'PROD-003',PRODUCTO:'Chorizo a la criolla',CANTIDAD:2,PRECIO:2800,MONTO:5600},
@@ -804,7 +834,9 @@
       updateKPIs(datos);
       renderCharts(datos);
       renderTable('');
-      setStatus('ok', datos.length + ' registro(s) de ' + mes);
+      var selAnio = document.getElementById('ventas-meses-anio');
+      var anio = selAnio ? selAnio.value : getAnioActual();
+      setStatus('ok', datos.length + ' registro(s) de ' + mes + ' ' + anio);
       document.getElementById('empty-state').hidden = true;
     }
 

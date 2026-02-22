@@ -25,7 +25,7 @@
   ];
 
   /** Columnas que no se muestran en la tabla. */
-  var columnasOcultas = ['MES', 'ID-VENTA', 'ID-PRODUCTO'];
+  var columnasOcultas = ['MES', 'AÑO', 'ID-VENTA', 'ID-PRODUCTO'];
 
   var allData = [];
   var filteredData = [];
@@ -77,10 +77,32 @@
     return NOMBRES_MESES[idx] || NOMBRES_MESES[0];
   }
 
+  function getAnioActual() {
+    return new Date().getFullYear();
+  }
+
+  function getAniosDisponibles() {
+    var actual = getAnioActual();
+    var lista = [];
+    for (var a = actual; a >= actual - 4; a--) lista.push(a);
+    return lista;
+  }
+
   function init() {
-    var selectMes = document.getElementById('ventas-meses-mes');
-    var btnCargar = document.getElementById('ventas-meses-btn-cargar');
+    var selectAnio = document.getElementById('listado-ventas-anio');
+    var selectMes = document.getElementById('listado-ventas-mes');
+    var btnCargar = document.getElementById('listado-ventas-btn-cargar');
     if (!selectMes || !btnCargar) return;
+
+    if (selectAnio) {
+      getAniosDisponibles().forEach(function (anio) {
+        var opt = document.createElement('option');
+        opt.value = anio;
+        opt.textContent = anio;
+        selectAnio.appendChild(opt);
+      });
+      selectAnio.value = getAnioActual();
+    }
 
     if (NOMBRES_MESES && NOMBRES_MESES.length) {
       NOMBRES_MESES.forEach(function (nombre) {
@@ -115,15 +137,17 @@
   }
 
   function mostrarMensaje(texto, esError) {
-    var msg = document.getElementById('ventas-meses-mensaje');
+    var msg = document.getElementById('listado-ventas-mensaje');
     if (!msg) return;
     msg.textContent = texto;
-    msg.className = 'ventas-meses__mensaje' + (esError ? ' ventas-meses__mensaje--error' : '');
+    msg.className = 'listado-ventas__mensaje' + (esError ? ' listado-ventas__mensaje--error' : '');
   }
 
   function cargarVentasDelMes() {
-    var selectMes = document.getElementById('ventas-meses-mes');
+    var selectAnio = document.getElementById('listado-ventas-anio');
+    var selectMes = document.getElementById('listado-ventas-mes');
     var mes = selectMes ? selectMes.value : '';
+    var anio = selectAnio ? parseInt(selectAnio.value, 10) : getAnioActual();
     if (!mes) {
       mostrarMensaje('Seleccione un mes.', true);
       return;
@@ -156,8 +180,13 @@
       })
       .then(function (data) {
         if (data && data.ok && Array.isArray(data.datos)) {
-          pintarTabla(mes, data.datos);
-          mostrarMensaje('Se cargaron ' + data.datos.length + ' registro(s) de ' + mes + '.');
+          var datos = data.datos.filter(function (r) {
+            var rowAnio = r.AÑO !== undefined && r.AÑO !== null && r.AÑO !== '' ? parseInt(String(r.AÑO), 10) : null;
+            if (rowAnio === null) return true;
+            return rowAnio === anio;
+          });
+          pintarTabla(mes, datos);
+          mostrarMensaje('Se cargaron ' + datos.length + ' registro(s) de ' + mes + ' ' + anio + '.');
         } else {
           mostrarMensaje(data && (data.error || data.mensaje) || 'No se recibieron datos.', true);
           ocultarTabla();
@@ -175,10 +204,10 @@
   }
 
   function pintarTabla(nombreMes, datos) {
-    var wrapper = document.getElementById('ventas-meses-tabla-wrapper');
-    var subtitulo = document.getElementById('ventas-meses-subtitulo');
-    var thead = document.getElementById('ventas-meses-thead');
-    var tbody = document.getElementById('ventas-meses-tbody');
+    var wrapper = document.getElementById('listado-ventas-tabla-wrapper');
+    var subtitulo = document.getElementById('listado-ventas-subtitulo');
+    var thead = document.getElementById('listado-ventas-thead');
+    var tbody = document.getElementById('listado-ventas-tbody');
     if (!wrapper || !thead || !tbody) return;
 
     allData = datos;
@@ -213,7 +242,7 @@
   }
 
   function renderTable(searchTerm, nombreMes, columnas) {
-    var tbody = document.getElementById('ventas-meses-tbody');
+    var tbody = document.getElementById('listado-ventas-tbody');
     var footer = document.getElementById('table-footer');
     var pagination = document.getElementById('table-pagination');
     var paginationInfo = document.getElementById('table-pagination-info');
@@ -311,7 +340,7 @@
   }
 
   function ocultarTabla() {
-    var wrapper = document.getElementById('ventas-meses-tabla-wrapper');
+    var wrapper = document.getElementById('listado-ventas-tabla-wrapper');
     if (wrapper) wrapper.hidden = true;
   }
 

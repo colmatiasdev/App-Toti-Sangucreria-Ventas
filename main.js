@@ -11,10 +11,10 @@
       if (path.toLowerCase().indexOf('nueva-venta') !== -1 && href.toLowerCase().indexOf('nueva-venta') !== -1) {
         link.classList.add('nav__link--active');
       }
-      if (path.indexOf('ventas-por-meses') !== -1 && href.indexOf('ventas-por-meses') !== -1) {
+      if (path.indexOf('listado-ventas') !== -1 && href.indexOf('listado-ventas') !== -1) {
         link.classList.add('nav__link--active');
       }
-      if (path.indexOf('dashboard-mensual') !== -1 && href.indexOf('dashboard-mensual') !== -1) {
+      if ((path.indexOf('dashboard') !== -1 || path.indexOf('Dashboard') !== -1) && (href.indexOf('dashboard') !== -1 || href.indexOf('Dashboard') !== -1)) {
         link.classList.add('nav__link--active');
       }
       if (path.indexOf('ventas-por-anio') !== -1 && href.indexOf('ventas-por-anio') !== -1) {

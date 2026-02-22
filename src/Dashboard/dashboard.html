@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - EL TOTI Sandwicheria</title>
+  <link rel="stylesheet" href="../../index.css">
+  <link rel="stylesheet" href="../Footer/footer.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header__logo">
+      <h1>EL TOTI Sandwicheria</h1>
+      <span class="header__subtitle">Sistema de Ventas</span>
+    </div>
+    <nav class="nav">
+      <ul class="nav__menu">
+        <li class="nav__item">
+          <a href="../Ventas/Nueva-venta/Nueva-venta.html" class="nav__link">Nueva venta</a>
+        </li>
+        <li class="nav__item">
+          <a href="../Ventas/Listado-Ventas/listado-ventas.html" class="nav__link">Listado de ventas</a>
+        </li>
+        <li class="nav__item">
+          <a href="../Ventas-por-anio/ventas-por-anio.html" class="nav__link">Ventas por año</a>
+        </li>
+        <li class="nav__item">
+          <a href="dashboard.html" class="nav__link nav__link--active">Dashboard</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="page-header" style="margin-bottom: 1rem;">
+        <a href="../../index.html" class="back-link">← Volver al inicio</a>
+      </div>
+      <h2 class="hero__title">Dashboard</h2>
+      <p class="hero__text">
+        Elige el resumen que quieras consultar: ventas del mes o resumen anual.
+      </p>
+      <div class="hero__cards">
+        <a href="Dashboard-Mensual/dashboard-mensual.html" class="card">
+          <span class="card__icon">📊</span>
+          <h3 class="card__title">Mensual</h3>
+          <p class="card__text">Resumen de ventas del mes: total, cantidad e ítems.</p>
+        </a>
+        <a href="../Ventas-por-anio/ventas-por-anio.html" class="card">
+          <span class="card__icon">📆</span>
+          <h3 class="card__title">Anual</h3>
+          <p class="card__text">Resumen anual por mes: totales y cantidad de ventas.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container" data-footer-src="../Footer/footer.html"></div>
+
+  <script src="../../main.js"></script>
+  <script src="../Footer/footer.js"></script>
+</body>
+</html>
