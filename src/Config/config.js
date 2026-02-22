@@ -14,12 +14,11 @@
     APP_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxpzOpWq_FUVOQbfcaJj9223Z7Y23loIKw5HMGui-2URkwyHbe_-pk9k4j7S2zp6BAE/exec',
 
     /**
-     * Proxy CORS para leer la respuesta del Apps Script desde localhost o GitHub Pages.
-     * Sin proxy el navegador bloquea la respuesta (CORS); la venta se guarda igual pero no se puede leer el JSON.
-     * Con proxy la petición pasa por el servidor y se evita el error en consola.
-     * Para desactivar: CORS_PROXY: ''
+     * Proxy CORS (dejar vacío para enviar directo al Apps Script).
+     * Sin proxy: la venta se guarda; el navegador puede bloquear la respuesta por CORS y se muestra mensaje de confirmación igual.
+     * Algunos proxies (corsproxy.io) dan 502; si pasa, deja CORS_PROXY: ''
      */
-    CORS_PROXY: 'https://corsproxy.io/?'
+    CORS_PROXY: ''
   };
 
   global.APP_CONFIG = Config;

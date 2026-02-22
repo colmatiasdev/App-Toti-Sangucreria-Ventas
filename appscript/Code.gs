@@ -9,8 +9,8 @@
  * Agregar más tablas en TABLAS cuando se creen nuevas hojas.
  */
 
-/** Solo el ID del Google Sheet (de la URL: .../d/ESTE_ID/edit). */
-var SPREADSHEET_ID = 'https://docs.google.com/spreadsheets/d/1R05n3t2cgmzX-z58b9Sgx4He9k9Y9NAm9myQXbEwv3Q/edit';
+/** ID del Google Sheet. Poner solo el ID (ej: 1R05n3t2cgmzX-z58b9Sgx4He9k9Y9NAm9myQXbEwv3Q) o la URL completa. */
+var SPREADSHEET_ID = '1R05n3t2cgmzX-z58b9Sgx4He9k9Y9NAm9myQXbEwv3Q';
 
 /** Definición de tablas (hoja, PK, columnas). Coincidir con src/Config/tables.js */
 var TABLAS = {
@@ -66,11 +66,22 @@ function parseBody(e) {
   return params;
 }
 
-function getSS() {
-  if (!SPREADSHEET_ID || SPREADSHEET_ID.indexOf('REEMPLAZAR') !== -1 || SPREADSHEET_ID.length < 40) {
+function getIdSpreadsheet() {
+  var id = SPREADSHEET_ID || '';
+  if (!id || id.indexOf('REEMPLAZAR') !== -1) {
     throw new Error('Configura SPREADSHEET_ID en Code.gs (solo el ID del documento).');
   }
-  return SpreadsheetApp.openById(SPREADSHEET_ID);
+  var match = id.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return match[1];
+  return id.trim();
+}
+
+function getSS() {
+  var id = getIdSpreadsheet();
+  if (id.length < 40) {
+    throw new Error('SPREADSHEET_ID inválido. Usa solo el ID (ej: .../d/ESTE_ID/edit).');
+  }
+  return SpreadsheetApp.openById(id);
 }
 
 function getHoja(ss, nombreHoja, columnas) {
